@@ -11,11 +11,16 @@ function countAnimals(animal) {
     return species;
   }
 
-  const getBySpecies = data.species.find((ani) => ani.name === animal.specie).residents.length;
+  if (!animal.sex) {
+    const getBySpecies = data.species.find((ani) => ani.name === animal.specie).residents.length;
+    return getBySpecies;
+  }
 
-  return getBySpecies;
+  const getBySpeciesAndSex = data.species.find((ani) => ani.name === animal.specie);
+  const teste = getBySpeciesAndSex.residents.filter((el) => el.sex === 'female');
+  return teste.length;
 }
 
-// console.log(countAnimals({ specie: 'lions', sex: 'female' }));
+console.log(countAnimals({ specie: 'lions' }));
 
 module.exports = countAnimals;
