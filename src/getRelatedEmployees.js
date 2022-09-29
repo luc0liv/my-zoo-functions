@@ -7,10 +7,18 @@ const managersIds = [stephanieId, olaId, burlId];
 
 const isManager = (id) => managersIds.some((manager) => manager === id);
 
-// console.log(isManager('b0dc644a-5335-489b-8a2c-4e086c7819a2'));
-
 function getRelatedEmployees(managerId) {
-  // seu código aqui
+  if (isManager(managerId)) {
+    // const manager = data.employees.find((employee) => employee.id === managerId);
+    // const { responsibleFor } = manager;
+    // console.log(responsibleFor);
+    const managerEmployees = data.employees.filter((emp) => emp.managers.includes(managerId));
+    const newArray = managerEmployees.map((empl) => `${empl.firstName} ${empl.lastName}`);
+
+    return newArray;
+  }
 }
+
+console.log(getRelatedEmployees(burlId));
 
 module.exports = { isManager, getRelatedEmployees };
