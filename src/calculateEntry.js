@@ -19,9 +19,20 @@ const countEntrants = (entrants) => {
   return entries;
 };
 
-console.log(countEntrants(entrantsArray));
+// console.log(countEntrants(entrantsArray));
 
 const calculateEntry = (entrants) => {
+  if (!entrants || Object.keys(entrants).length === 0) {
+    return 0;
+  }
+
+  const entrantsPerAge = countEntrants(entrants);
+  const { child, adult, senior } = data.prices;
+  const sum = (entrantsPerAge.child * child)
+  + (entrantsPerAge.adult * adult)
+  + (entrantsPerAge.senior * senior);
+
+  return sum;
 };
 
 module.exports = { calculateEntry, countEntrants };
