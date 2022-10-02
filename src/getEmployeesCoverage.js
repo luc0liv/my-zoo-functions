@@ -23,6 +23,15 @@ const getEveryEmployee = () => {
   return everyEmployee;
 };
 
+const getSpecificEmployee = (person) => {
+  const employee = employees
+    .find((emp) => emp.firstName === person.name
+  || emp.lastName === person.name
+  || emp.id === person.id);
+
+  return employee;
+};
+
 const getEmployeesCoverage = (person) => {
   if (!person) {
     return getEveryEmployee();
@@ -31,11 +40,8 @@ const getEmployeesCoverage = (person) => {
     throw new Error('Informações inválidas');
   }
   if (person.name || person.id) {
-    const employee = employees
-      .find((emp) => emp.firstName === person.name
-      || emp.lastName === person.name
-      || emp.id === person.id);
-    const { id, firstName, lastName, responsibleFor } = employee;
+    const specifiedEmployee = getSpecificEmployee(person);
+    const { id, firstName, lastName, responsibleFor } = specifiedEmployee;
     const getSpecies = species.filter((spec) => responsibleFor.some((el) => spec.id === el));
     return {
       id,
