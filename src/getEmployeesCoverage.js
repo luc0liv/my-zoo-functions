@@ -2,6 +2,13 @@ const data = require('../data/zoo_data');
 
 const { employees, species } = data;
 
+const createNewObject = (id, firstName, lastName, spec, locations) => ({
+  id,
+  fullName: `${firstName} ${lastName}`,
+  species: spec,
+  locations,
+});
+
 const findMatch = (person) => {
   const hasMatch = employees.some((emp) => emp.id === person.id
   || emp.firstName === person.name
@@ -12,12 +19,10 @@ const findMatch = (person) => {
 const getEveryEmployee = () => {
   const everyEmployee = employees.map((emp) => {
     const getSpecies = species.filter((sp) => emp.responsibleFor.some((el) => sp.id === el));
-    return {
-      id: emp.id,
-      fullName: `${emp.firstName} ${emp.lastName}`,
-      species: getSpecies.map((sp) => sp.name),
-      locations: getSpecies.map((sp) => sp.location),
-    };
+    const employeesInfo = createNewObject(emp.id, emp.firstName, emp.lastName,
+      getSpecies.map((sp) => sp.name),
+      getSpecies.map((sp) => sp.location));
+    return employeesInfo;
   });
 
   return everyEmployee;
@@ -43,15 +48,13 @@ const getEmployeesCoverage = (person) => {
     const specifiedEmployee = getSpecificEmployee(person);
     const { id, firstName, lastName, responsibleFor } = specifiedEmployee;
     const getSpecies = species.filter((spec) => responsibleFor.some((el) => spec.id === el));
-    return {
-      id,
-      fullName: `${firstName} ${lastName}`,
-      species: getSpecies.map((sp) => sp.name),
-      locations: getSpecies.map((sp) => sp.location),
-    };
+
+    const employeeInfo = createNewObject(id, firstName, lastName,
+      getSpecies.map((sp) => sp.name),
+      getSpecies.map((sp) => sp.location));
+
+    return employeeInfo;
   }
 };
-
-// console.log(getEmployeesCoverage('Luciana'));
 
 module.exports = getEmployeesCoverage;
