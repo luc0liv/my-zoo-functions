@@ -29,12 +29,12 @@ const getEveryEmployee = () => {
 };
 
 const getSpecificEmployee = (person) => {
-  const employee = employees
-    .find((emp) => emp.firstName === person.name
-  || emp.lastName === person.name
-  || emp.id === person.id);
+  const employeeByNameOrId = employees
+    .find((employee) => employee.firstName === person.name
+  || employee.lastName === person.name
+  || employee.id === person.id);
 
-  return employee;
+  return employeeByNameOrId;
 };
 
 const getEmployeesCoverage = (person) => {
@@ -44,17 +44,16 @@ const getEmployeesCoverage = (person) => {
   if (!findMatch(person)) {
     throw new Error('Informações inválidas');
   }
-  if (person.name || person.id) {
-    const specifiedEmployee = getSpecificEmployee(person);
-    const { id, firstName, lastName, responsibleFor } = specifiedEmployee;
-    const getSpecies = species.filter((spec) => responsibleFor.some((el) => spec.id === el));
+  const specifiedEmployee = getSpecificEmployee(person);
+  const { id, firstName, lastName, responsibleFor } = specifiedEmployee;
+  const getSpecies = species.filter((spec) => responsibleFor
+    .some((speciesId) => spec.id === speciesId));
 
-    const employeeInfo = createNewObject(id, firstName, lastName,
-      getSpecies.map((sp) => sp.name),
-      getSpecies.map((sp) => sp.location));
+  const employeeInfo = createNewObject(id, firstName, lastName,
+    getSpecies.map((spec) => spec.name),
+    getSpecies.map((spec) => spec.location));
 
-    return employeeInfo;
-  }
+  return employeeInfo;
 };
 
 module.exports = getEmployeesCoverage;
