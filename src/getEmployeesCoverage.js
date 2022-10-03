@@ -10,18 +10,19 @@ const createNewObject = (id, firstName, lastName, spec, locations) => ({
 });
 
 const findMatch = (person) => {
-  const hasMatch = employees.some((emp) => emp.id === person.id
-  || emp.firstName === person.name
-  || emp.lastName === person.name);
+  const hasMatch = employees.some((employee) => employee.id === person.id
+  || employee.firstName === person.name
+  || employee.lastName === person.name);
   return hasMatch;
 };
 
 const getEveryEmployee = () => {
-  const everyEmployee = employees.map((emp) => {
-    const getSpecies = species.filter((sp) => emp.responsibleFor.some((el) => sp.id === el));
-    const employeesInfo = createNewObject(emp.id, emp.firstName, emp.lastName,
-      getSpecies.map((sp) => sp.name),
-      getSpecies.map((sp) => sp.location));
+  const everyEmployee = employees.map((employee) => {
+    const getSpecies = species.filter((spec) => employee.responsibleFor
+      .some((speciesId) => spec.id === speciesId));
+    const employeesInfo = createNewObject(employee.id, employee.firstName, employee.lastName,
+      getSpecies.map((spec) => spec.name),
+      getSpecies.map((spec) => spec.location));
     return employeesInfo;
   });
 
