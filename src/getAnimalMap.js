@@ -58,6 +58,4 @@ const getAnimalMap = (options) => {
   }
 };
 
-// console.log(getAnimalMap({ includeNames: true, sorted: true, sex: 'female' }));
-
 module.exports = getAnimalMap;
