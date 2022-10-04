@@ -14,13 +14,21 @@ const getSpeciesLocation = () => {
 };
 
 const getSpeciesWithNames = (options) => {
-  const speciesWithNames = locations.map((location) => (
-    {
-      [location]: species.filter((animal) => animal.location === location)
-        .map((animal) => ({ [animal.name]: animal.residents
-          .map((resident) => resident.name) })),
+  const speciesWithNames = locations.map((location) => {
+    const speciesFilter = species.filter((animal) => animal.location === location);
+    if (options.sorted) {
+      return {
+        [location]: speciesFilter
+          .map((animal) => ({ [animal.name]: animal.residents
+            .map((resident) => resident.name).sort() })),
+      };
     }
-  ));
+    return {
+      [location]: speciesFilter.map((animal) => ({ [animal.name]: animal.residents
+        .map((resident) => resident.name) })),
+    };
+  });
+
   return speciesWithNames.reduce((obj, item) => Object.assign(obj, item), {});
 };
 
@@ -29,10 +37,10 @@ const getAnimalMap = (options) => {
     return getSpeciesLocation();
   }
   if (options.includeNames) {
-    return getSpeciesWithNames();
+    return getSpeciesWithNames(options);
   }
 };
 
-console.log(getAnimalMap({ includeNames: true }));
+console.log(getAnimalMap({ includeNames: true, sorted: true }));
 
 module.exports = getAnimalMap;
