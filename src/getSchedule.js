@@ -24,21 +24,18 @@ const isMatch = (target) => species.some((spec) => spec.name === target);
 const dayMatch = (target) => Object.keys(hours).some((day) => day === target);
 
 const getSchedule = (scheduleTarget) => {
+  const getScheduling = getGeneralSchedule();
+
   if (scheduleTarget === 'Monday') {
     return { Monday: { officeHour: 'CLOSED', exhibition: 'The zoo will be closed!' } };
   }
-
   if (dayMatch(scheduleTarget)) {
-    const teste = getGeneralSchedule();
-    const testeFilter = Object.keys(teste).filter((key) => key === scheduleTarget);
-    return { [testeFilter]: teste[testeFilter] };
+    const scheduleFilter = Object.keys(getScheduling).filter((key) => key === scheduleTarget);
+    return { [scheduleFilter]: getScheduling[scheduleFilter] };
   }
-
   if (!scheduleTarget || !isMatch(scheduleTarget)) {
-    const getScheduling = getGeneralSchedule();
     return getScheduling;
   }
-
   const getAnimalSchedule = getScheduleBySpecies(scheduleTarget);
   return getAnimalSchedule;
 };
