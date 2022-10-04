@@ -21,11 +21,19 @@ const getGeneralSchedule = () => {
 const getScheduleBySpecies = (target) => species.find((spec) => spec.name === target).availability;
 
 const isMatch = (target) => species.some((spec) => spec.name === target);
+const dayMatch = (target) => Object.keys(hours).some((day) => day === target);
 
 const getSchedule = (scheduleTarget) => {
   if (scheduleTarget === 'Monday') {
     return { Monday: { officeHour: 'CLOSED', exhibition: 'The zoo will be closed!' } };
   }
+
+  if (dayMatch(scheduleTarget)) {
+    const teste = getGeneralSchedule();
+    const testeFilter = Object.keys(teste).filter((key) => key === scheduleTarget);
+    return { [testeFilter]: teste[testeFilter] };
+  }
+
   if (!scheduleTarget || !isMatch(scheduleTarget)) {
     const getScheduling = getGeneralSchedule();
     return getScheduling;
@@ -35,5 +43,4 @@ const getSchedule = (scheduleTarget) => {
   return getAnimalSchedule;
 };
 
-console.log(getSchedule('Monday'));
 module.exports = getSchedule;
