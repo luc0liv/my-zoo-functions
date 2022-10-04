@@ -33,7 +33,7 @@ const getSpeciesWithNames = (options) => {
 };
 
 const getAnimalMap = (options) => {
-  if (!options) {
+  if (!options || (options.sex && !options.includeNames)) {
     return getSpeciesLocation();
   }
   if (options.includeNames) {
