@@ -13,22 +13,39 @@ const getSpeciesLocation = () => {
   return speciesLocations.reduce((obj, item) => Object.assign(obj, item), {});
 };
 
-const getSpeciesWithNames = (options) => {
-  const speciesWithNames = locations.map((location) => {
+const getSpeciesBySex = (options) => {
+  const speciesBySex = locations.map((location) => {
     const speciesFilter = species.filter((animal) => animal.location === location);
-    if (options.sorted) {
+    if (options.sex && options.sorted) {
       return {
         [location]: speciesFilter
           .map((animal) => ({ [animal.name]: animal.residents
-            .map((resident) => resident.name).sort() })),
+            .filter((resident) => resident.sex === options.sex).map((anm) => anm.name).sort() })),
       };
     }
     return {
-      [location]: speciesFilter.map((animal) => ({ [animal.name]: animal.residents
-        .map((resident) => resident.name) })),
+      [location]: speciesFilter
+        .map((animal) => ({ [animal.name]: animal.residents
+          .filter((resident) => resident.sex === options.sex).map((anm) => anm.name) })),
     };
   });
+  return speciesBySex.reduce((obj, item) => Object.assign(obj, item), {});
+};
 
+const getSpeciesWithNames = (options) => {
+  const speciesWithNames = locations.map((location) => {
+    const speciesFilter = species.filter((animal) => animal.location === location);
+    if (options.sex) {
+      return getSpeciesBySex(options);
+    }
+    if (options.sorted && !options.sex) {
+      return { [location]: speciesFilter
+        .map((animal) => ({ [animal.name]: animal.residents
+          .map((resident) => resident.name).sort() })) };
+    }
+    return { [location]: speciesFilter.map((animal) => ({ [animal.name]: animal.residents
+      .map((resident) => resident.name) })) };
+  });
   return speciesWithNames.reduce((obj, item) => Object.assign(obj, item), {});
 };
 
@@ -41,6 +58,6 @@ const getAnimalMap = (options) => {
   }
 };
 
-console.log(getAnimalMap({ includeNames: true, sorted: true }));
+// console.log(getAnimalMap({ includeNames: true, sorted: true, sex: 'female' }));
 
 module.exports = getAnimalMap;
