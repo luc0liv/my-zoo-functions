@@ -20,24 +20,24 @@ const getGeneralSchedule = () => {
 
 const getScheduleBySpecies = (target) => species.find((spec) => spec.name === target).availability;
 
-const isMatch = (target) => species.some((spec) => spec.name === target);
+const speciesMatch = (target) => species.some((spec) => spec.name === target);
 const dayMatch = (target) => Object.keys(hours).some((day) => day === target);
 
 const getSchedule = (scheduleTarget) => {
-  const getScheduling = getGeneralSchedule();
+  const generalScheduling = getGeneralSchedule();
 
   if (scheduleTarget === 'Monday') {
     return { Monday: { officeHour: 'CLOSED', exhibition: 'The zoo will be closed!' } };
   }
   if (dayMatch(scheduleTarget)) {
-    const scheduleFilter = Object.keys(getScheduling).filter((key) => key === scheduleTarget);
-    return { [scheduleFilter]: getScheduling[scheduleFilter] };
+    const scheduleByDay = Object.keys(generalScheduling).filter((key) => key === scheduleTarget);
+    return { [scheduleByDay]: generalScheduling[scheduleByDay] };
   }
-  if (!scheduleTarget || !isMatch(scheduleTarget)) {
-    return getScheduling;
+  if (!scheduleTarget || !speciesMatch(scheduleTarget)) {
+    return generalScheduling;
   }
-  const getAnimalSchedule = getScheduleBySpecies(scheduleTarget);
-  return getAnimalSchedule;
+  const scheduleBySpecies = getScheduleBySpecies(scheduleTarget);
+  return scheduleBySpecies;
 };
 
 module.exports = getSchedule;
