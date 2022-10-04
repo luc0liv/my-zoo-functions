@@ -2,24 +2,31 @@ const data = require('../data/zoo_data');
 
 const { species, hours } = data;
 
+const getGeneralSchedule = () => {
+  const hoursKeys = Object.keys(hours);
+  const scheduling = hoursKeys.map((key) => ({ [key]: {
+    officeHour: key === 'Monday'
+      ? 'CLOSED'
+      : `Open from ${hours[key].open}am until ${hours[key].close}pm`,
+    exhibition: key === 'Monday'
+      ? 'The zoo will be closed!'
+      : species.filter((spec) => spec.availability.includes(key))
+        .map((spec) => spec.name),
+  } }));
+
+  return scheduling;
+};
+
 const getSchedule = (scheduleTarget) => {
   if (!scheduleTarget) {
-    return {
-      Tuesday: { // Dia da semana
-        officeHour: `Open from ${hours.Tuesday.open}am until ${hours.Tuesday.close}pm.`, // n
-        exhibition: species.filter((spec) => spec.availability.includes('Tuesday')).map((spec) => spec.name),
-      },
-      Wednesday: {
-        officeHour: 'Open from 8am until 6pm',
-        exhibition: ['tigers', 'bears', 'penguins', 'otters', 'frogs', 'giraffes'],
-      },
-    };
+    const getScheduling = getGeneralSchedule();
+    // Solução encontrada aqui:
+    // https://stackoverflow.com/questions/19874555/how-do-i-convert-array-of-objects-into-one-object-in-javascript
+    return getScheduling.reduce((obj, item) => Object.assign(obj, item), {});
   }
   const getAnimalSchedule = species
     .find((spec) => spec.name === scheduleTarget).availability;
   return getAnimalSchedule;
 };
-
-console.log(getSchedule());
 
 module.exports = getSchedule;
